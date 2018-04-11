@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 
+{% load blog_tags %}
+
+{% block head %}
+    <div class="jumbotron text-center">
+        <h1>苍云横渡</h1>
+        <p> </p>
+        <h3>野雁横云不知愁，昨年阿娇梦里求。饮不尽者杯中酒，割不完是名人头。</h3>
+    </div>
+{% endblock head %}
+    
 {% block main %}
+    {% if error_msg %}
+        <p>{{ error_msg }}</p>
+    {% endif %}
+
     {% for post in post_list %}
         <article class="post post-{{ post.pk }}">
             <header class="entry-header">
@@ -8,43 +22,70 @@
                     <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
                 </h1>
                 <div class="entry-meta">
-                    <span class="post-category"><a href="#">{{ post.category.name }}</a></span>
-                    <span class="post-date"><a href="#"><time class="entry-date"
-                                                              datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
-                    <span class="post-author"><a href="#">{{ post.author }}</a></span>
-                    <span class="comments-link"><a href="#">{{ post.comment_set.count }} 评论</a></span>
-                    <span class="views-count"><a href="#">588 阅读</a></span>
+                    <span class="post-category"><a href="{% url 'blog:category' post.category.pk %}">
+                        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ post.category.name }}</a></span>
+                    <span class="post-date"><a href="#"><time class="entry-date" datetime="{{ post.created_time }}">
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{ post.created_time }}</time></a></span>
+                    <span class="post-author"><a href="#">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ post.author }}</a></span>
+                    <span class="comments-link">
+                        <a href="{{ post.get_absolute_url }}#comment-area">
+                        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{ post.comment_set.count }} 评论</a></span>
+                    <span class="views-count"><a href="{{ post.get_absolute_url }}">
+                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {{ post.views }} 阅读</a></span>
                 </div>
             </header>
             <div class="entry-content clearfix">
-                <p>{{ post.excerpt }}</p>
+                <p>{{ post.excerpt }}...</p>
                 <div class="read-more cl-effect-14">
                     <a href="{{ post.get_absolute_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
                 </div>
+            </div>
+            <div class="widget widget-tag-cloud">
+                <ul>
+                    {% for tag in post.tags.all %}
+                        <li>
+                            <a href="{% url 'blog:tag' tag.pk %}">{{ tag.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         </article>
     {% empty %}
         <div class="no-post">暂时还没有发布的文章！</div>
     {% endfor %}
 
-    <!-- 简单分页效果
-    <div class="pagination-simple">
-        <a href="#">上一页</a>
-        <span class="current">第 6 页 / 共 11 页</span>
-        <a href="#">下一页</a>
-    </div>
-    -->
-    <div class="pagination">
-        <ul>
-            <li><a href="">1</a></li>
-            <li><a href="">...</a></li>
-            <li><a href="">4</a></li>
-            <li><a href="">5</a></li>
-            <li class="current"><a href="">6</a></li>
-            <li><a href="">7</a></li>
-            <li><a href="">8</a></li>
-            <li><a href="">...</a></li>
-            <li><a href="">11</a></li>
-        </ul>
-    </div>
+
+    {% comment %}
+    完善的分页导航
+    {% endcomment %}
+    {% if is_paginated %}
+        <div class="pagination">
+            <ul>
+                {% if first %}
+                    <li><a href="?page=1">1</a></li>
+                {% endif %}
+                {% if left %}
+                    {% if left_has_more %}
+                        <li><span>...</span></li>
+                    {% endif %}
+                    {% for i in left %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endfor %}
+                {% endif %}
+                <li class="current"><a class="current-page" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+                {% if right %}
+                    {% for i in right %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endfor %}
+                    {% if right_has_more %}
+                        <li><span>...</span></li>
+                    {% endif %}
+                {% endif %}
+                {% if last %}
+                    <li><a href="?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
 {% endblock main %}
