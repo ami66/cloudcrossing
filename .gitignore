@@ -95,5 +95,5 @@ media/
 .idea/
 *.sqlite3
 
-# 
+
 fabfile.py
