@@ -25,7 +25,7 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=70)
+    title = models.CharField(max_length=150)
     body = MDTextField()
 
     created_time = models.DateTimeField()
