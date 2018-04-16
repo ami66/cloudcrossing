@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+
 {% load highlight %}
 
-{% block main %}
+{% block row %}
+<main class="col-md-8">
     {% if query %}
         {% for result in page.object_list %}
             <article class="post post-{{ result.object.pk }}">
@@ -10,18 +12,19 @@
                         <a href="{{ result.object.get_absolute_url }}">{% highlight result.object.title with query %}</a>
                     </h1>
                     <div class="entry-meta">
-                    <span class="post-category">
-                        <a href="{% url 'blog:category' result.object.category.pk %}">
-                            {{ result.object.category.name }}</a></span>
+                        <span class="post-category"><a href="{% url 'blog:category' result.object.category.pk %}">
+                            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ result.object.category.name }}</a></span>
                         <span class="post-date"><a href="#">
                             <time class="entry-date" datetime="{{ result.object.created_time }}">
-                                {{ result.object.created_time }}</time></a></span>
-                        <span class="post-author"><a href="#">{{ result.object.author }}</a></span>
-                        <span class="comments-link">
-                        <a href="{{ result.object.get_absolute_url }}#comment-area">
-                            {{ result.object.comment_set.count }} 评论</a></span>
-                        <span class="views-count"><a
-                                href="{{ result.object.get_absolute_url }}">{{ result.object.views }} 阅读</a></span>
+                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{ result.object.created_time }}</time></a></span>
+                        <span class="post-author"><a href="#">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ result.object.author }}</a></span>
+                        <span class="comments-link"><a href="{{ result.object.get_absolute_url }}#comment-area">
+                            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span id = "sourceId::{{ post.pk }}" class = "cy_cmt_count" ></span>
+                            <script id="cy_cmt_num" src="https://changyan.sohu.com/upload/plugins/plugins.list.count.js?clientId=cytz8slDD"></script>
+                             评论</a></span>
+                        <span class="views-count"><a href="{{ result.object.get_absolute_url }}">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 阅读</a></span>
                     </div>
                 </header>
                 <div class="entry-content clearfix">
@@ -48,4 +51,12 @@
     {% else %}
         请输入搜索关键词，例如 django
     {% endif %}
-{% endblock main %}
+</main>
+
+<aside class="col-md-4">
+
+{% include 'blog/plus.html' %}
+
+</aside>
+
+{% endblock row %}
