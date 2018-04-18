@@ -8,3 +8,4 @@ Pillow==5.1.0
 Pygments==2.2.0
 pytz==2018.3
 Whoosh==2.7.4
+python-decouple==3.1
