@@ -56,7 +56,7 @@
             if (kaydirma_cubugu > header_yuksekligi){$('.navbar').addClass('gizle');}   
             else {$('.navbar').removeClass('gizle');}  
   
-            if (kaydirma_cubugu > cubuk_seviye){$('.navbar').removeClass('sabit');}   
+            if (kaydirma_cubugu > cubuk_seviye){$('.navbar').removeClass('sabit'); $('.navbar-collapse').removeClass('in');}   
             else {$('.navbar').addClass('sabit');}                  
   
             cubuk_seviye = $(document).scrollTop();   
