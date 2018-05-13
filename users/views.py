@@ -20,7 +20,7 @@ def register(request):
         if form.is_valid():
             # 如果提交数据合法，调用表单的 save 方法将用户数据保存到数据库
             user = form.save()
-            auth_login(request, user)
+            auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             if redirect_to:
                 return redirect(redirect_to)
             else:
