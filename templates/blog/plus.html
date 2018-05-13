@@ -1,7 +1,7 @@
 {% load blog_tags %}
 
     <div class="widget widget-recent-posts">
-        <h3 class="widget-title">最新文章</h3>
+        <h3 class="widget-title">最新文章 <a href="{% url 'rss' %}">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; RSS 订阅</a></h3> 
         <hr>
         {% get_recent_posts as recent_post_list %}
             <ul>
@@ -59,8 +59,4 @@
                     暂无标签！
                 {% endfor %}
             </ul>
-    </div>
-
-    <div class="rss">
-        <a href="{% url 'rss' %}"><span class="ion-social-rss-outline"></span> RSS 订阅</a>
     </div>
