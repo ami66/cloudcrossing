@@ -105,11 +105,12 @@
 <aside class="col-md-4">
 
     {% include 'blog/plus.html' %}
-
+    <div class="hidden-sm hidden-xs">
     <div id="float" class="widget widget-content">
         <h3 class="widget-title">文章目录</h3>
         <hr style="margin-top:7px; margin-bottom:7px;">
         {{ post.toc|safe }}
+    </div>
     </div>
 
 </aside>
